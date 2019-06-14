@@ -1,0 +1,284 @@
+                #basic syntax
+import cv2
+def main():
+    print(cv2.__version__)
+
+if __name__ =="__main__":
+    main()
+
+
+
+                #code to read, show and print image
+import cv2
+def main():
+    img = cv2.imread("C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg")
+    print(img)
+    cv2.imshow('butterfly', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+if __name__ =="__main__":
+    main()
+
+
+
+
+                  #code to choose one window to be removed
+import cv2
+def main():
+    img1 = cv2.imread("C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg")
+    img2 = cv2.imread("C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg")
+    cv2.imshow('lena', img1)
+    cv2.imshow('abc',img2)
+    cv2.waitKey(0)
+    cv2.destroyWindow('lena')
+    cv2.destroyWindow('abc')
+if __name__ =="__main__":
+    main()
+
+
+
+                #CODE TP INCLUDE NAMED WINDOW
+import cv2
+def main():
+    img1 = cv2.imread("C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg")
+    img2 = cv2.imread("C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg")
+
+    cv2.namedWindow('lena', cv2.WINDOW_AUTOSIZE)                      #this helps to create a window without even having a image in it(we can add image later)
+    cv2.namedWindow('abc', cv2.WINDOW_AUTOSIZE)                       #cv2.WINDOW_NORMAL helps to chng size of window afterwards
+    
+    cv2.imshow('lena', img1)
+    cv2.imshow('abc',img2)
+    cv2.waitKey(0)
+    cv2.destroyWindow('lena')              #DESTROY WINDOW WILL WORK WITHOUYT NAMED WINDOW ALSO
+    cv2.destroyWindow('abc')
+if __name__ =="__main__":
+    main()
+
+
+
+
+                             #VARIOUS MODES OF DISPLAUING IMAGE
+import cv2    
+def main():
+    img1 = cv2.imread("C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg",0)            #0- GRAYSCALE, 1- AS IT IS, -1 AS ALPHA TRANSPERENCY
+    cv2.namedWindow('lena', cv2.WINDOW_AUTOSIZE)
+    cv2.imshow('lena', img1)
+    cv2.waitKey(0)
+    cv2.destroyWindow('lena')
+   
+if __name__ =="__main__":
+    main()
+
+
+
+                          #code to save the image
+import cv2
+def main():
+    img1 = cv2.imread("C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg",1)
+    
+    cv2.imwrite("H:/ip3/bench-carved-stones-cemetery-257360.jpg",img1)
+    cv2.imshow('lena', img1)
+   
+    cv2.waitKey(0)
+    cv2.destroyWindow('lena')
+   
+if __name__ =="__main__":
+    main()
+    
+
+
+                       #another for read and write function
+import cv2
+def main():
+    imgpath = "C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg"
+    img1 = cv2.imread(imgpath,1)
+    outpath = "H:/ip3/bench-carved-stones-cemetery-257360.jpg"
+    cv2.imwrite(outpath,img1)
+    cv2.imshow('lena', img1)
+   
+    cv2.waitKey(0)
+    cv2.destroyWindow('lena')
+   
+if __name__ =="__main__":
+    main()
+    
+
+                       #features of image
+import cv2
+def main():
+    imgpath = "C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg"
+    img1 = cv2.imread(imgpath,1)
+    print(type(img1))                                          #type is n dimensional array
+    print(img1.dtype)                                         #uint8 - unsigned integer of 8 bit
+    print(img1.ndim)                                            #3
+    print(img1.size)                                              #1333*2000*3 = 7998000= 7998.8kb(size of the image on memory not on disc
+    print(img1.shape)                                               #[1333,2000,3]  1333*2000 - resolution(height and width), 3 no. of channels(color)
+    cv2.imshow('lena', img1)
+   
+    cv2.waitKey(0)
+    cv2.destroyWindow('lena')
+   
+if __name__ =="__main__":
+    main()
+    
+
+                                    
+                       #features of grey scale image 
+import cv2
+def main():
+    imgpath = "C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg"
+    img1 = cv2.imread(imgpath,0)
+    print(img1)
+    print(type(img1))
+    print(img1.dtype)                           #uint8
+    print(img1.ndim)                             #2
+    print(img1.size)                                #1333*2000
+    print(img1.shape)                            #(1333*2000)
+    cv2.imshow('lena', img1)
+   
+    cv2.waitKey(0)
+    cv2.destroyWindow('lena')
+   
+if __name__ =="__main__":
+    main()
+    
+                
+
+                               #to do various drawing                      
+import cv2
+import numpy as np
+def main():
+    
+   img1 = np.zeros((512,512,3),np.uint8)        #np.zeros is a in built libraray which makes all the valus of tuple 0...hence giving black window
+   cv2.imshow('lena', img1)
+   
+   cv2.waitKey(0)
+   cv2.destroyWindow('lena')
+   
+if __name__ =="__main__":
+    main()
+
+
+
+
+
+                           #draw various shape
+import cv2
+import numpy as np
+def main():
+    
+   img1 = np.zeros((512,512,3),np.uint8)
+   cv2.line(img1,(99,0),(0,99),(255,255,255),4)
+   cv2.line(img1,(200,0),(0,200),(255,255,255),4)
+  
+   cv2.rectangle(img1,(50,50),(250,100),(156,125,100),4)                                  #TOP LEFT CORNER, BOTTOM RIGHT CORNER
+   cv2.rectangle(img1,(500,500),(250,100),(156,125,100),-1) 
+   
+   cv2.circle(img1,(60,60),20,(0,0,255),5)                                               #CENTRE, RADIUS, COLOR, WIDTH
+   cv2.circle(img1,(220,60),30,(0,255,0),-1)                                          #-1 IS USED TO FILL COMPLETELY
+ 
+
+   cv2.ellipse(img1,(200,500),(100,50), 0,0,360,(153,153,153),-1)
+   #CENTRE, (MAJOR , MINOR AXIS), ANGLE OF ROTATION, START ANGLE AND END ANGLE FROM MAJOR AXI IN CLOCKWISE DIETION FROM MAJOR AXIS,COLOR,WIDTH
+   cv2.ellipse(img1,(200,300),(100,50),30, 180,90,(153,153,153),-1)
+
+   points = np.array([[20,30], [50,60], [80,10], [55,12], [100,200]],np.int32)
+   points = points.reshape((-1,1,2))
+   cv2.polylines(img1, [points], True, (0,255,255),5)
+
+   text = "anu"
+   cv2.putText(img1, text, (300,300),cv2.FONT_HERSHEY_SIMPLEX, 4,(255,255,0))           #4 GIVES SIZE OF FONT
+   cv2.imshow('lena', img1)
+   
+   cv2.waitKey(0)
+   cv2.destroyWindow('lena')
+   
+if __name__ =="__main__":
+    main()
+
+
+
+                        #to draw color trackbar
+import cv2
+import numpy as np
+
+def emptyFunction():
+    pass
+def main():
+    
+   img1 = np.zeros((512,512,3),np.uint8)
+   windoeName = 'OpenCV BGR Colo Palette'
+   cv.namedWindow(windowName)
+
+   cv2.createTrackbar('B',windowName,0,255,emptyFunction)
+   cv2.createTrackbar('G',windowName,0,255,emptyFunction)
+   cv2.createTrackbar('R',windowName,0,255,emptyFunction)
+
+   while(True):
+       cv2.imshow(windowName,img1)
+
+       if cv2.waitkey(1)==27:
+           break
+
+        blue =  cv2.getTrackbarPos('B',windowName)
+        green = cv2.getTrackbarPos('G',windowName)
+        red =   cv2.getTrackbarPos('R',windowName)
+
+        img1[:] = [blue, green ,red]
+        print(blue,green,red)
+
+   
+   cv2.destroyAllWindows()
+   
+if __name__ =="__main__":
+    main()
+    
+
+                       #to know the functions in console window
+import cv2
+
+def main():
+    
+   events = [i for i in dir(cv2) if 'EVENT' in i]
+   print(events)
+   
+if __name__ =="__main__":
+    main()
+
+
+     
+                        #code to draw circle using mouse
+    
+
+import cv2
+import numpy as np
+
+windowName = 'DRAWING'
+img = np.zeros((512,512,3),np.uint8)
+cv2.namedWindow(windowName)
+
+def draw_circle(event, x,y,flags, param):
+    if event == cv2.EVENT_LBUTTONDBLCLK:
+        cv2.circle(img, (x,y),40, (0,255,0),-1)
+    if event == cv2.EVENT_RBUTTONDOWN:
+        cv2.circle(img, (x,y),40, (255,255,255),-1)
+
+    if event == cv2.EVENT_RBUTTONDBLCLK:
+        cv2.ellipse(img, (x,y),(100,50),0,0,360, (0,255,0),-1)    
+cv2.setMouseCallback(windowName, draw_circle)
+
+
+
+def main():
+    while(True):
+        cv2.imshow(windowName,img)
+        if cv2.waitKey(3) == 27:
+            break
+
+    cv2.destroyAllWindows()
+   
+if __name__ =="__main__":
+    main()
+    
+ 
+                             #
