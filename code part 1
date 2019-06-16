@@ -281,4 +281,277 @@ if __name__ =="__main__":
     main()
     
  
-                             #
+                              #matplotlib basics
+import cv2
+import matplotlib.pyplot as plt
+def main():
+    img = cv2.imread("C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg")
+    
+    plt.imshow(img, cmap = 'Reds')                                         #if we don't use color map then image will not give required color since mat follow rgb and cv follow bgr
+    plt.show()
+    
+if __name__ =="__main__":
+    main()
+
+
+
+                                  #features of images in matplotlib
+import cv2
+import matplotlib.pyplot as plt
+def main():
+    img = cv2.imread("C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg", 0)
+    
+    plt.imshow(img, cmap = 'gray')
+    plt.title('GRAY COLORMAP')
+    plt.xticks([])                                     #removes dimensionn scale of x and y axis
+    plt.yticks([])
+    plt.show()
+
+    plt.imshow(img)
+    plt.title('DEFAULT')
+    plt.xticks([])
+    plt.yticks([])
+    plt.show()
+if __name__ =="__main__":
+    main()
+
+
+
+
+                                  #TO CONVERT COLOR CHANNELS INTO ONE ANOTHER
+import cv2
+import matplotlib.pyplot as plt
+def main():
+    img = cv2.imread("C:/Users/user/Downloads/bench-carved-stones-cemetery-257360.jpg", 1)
+    img1 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    plt.imshow(img)
+    plt.title('COLOR IMAGE BGR')
+    plt.xticks([])
+    plt.yticks([])
+    plt.show()
+
+    plt.imshow(img1)
+    plt.title('COLOR IMAGE RGB')
+    plt.xticks([])
+    plt.yticks([])
+    plt.show()
+if __name__ =="__main__":
+    main()
+
+
+
+                   # code to know the color conersion flags
+import cv2
+import matplotlib.pyplot as plt
+def main():
+    j = 0
+    for filename in dir(cv2):
+        if filename.startswith('COLOR_'):
+            print(filename)
+            j = j+1
+
+    print('there are ' + str(j+1) + 'color conversion flags in open cv')
+        
+if __name__ =="__main__":
+    main()
+
+
+
+                        #to turn on  camera and print captured image
+import cv2
+#import matplotlib.pyplot as plt
+def main():
+    cap = cv2.VideoCapture(0)
+
+    if cap.isOpened():
+        ret, frame = cap.read()
+        print(ret)
+        print(frame)
+    else:
+        ret = False
+        
+if __name__ =="__main__":
+    main()
+
+
+                     #displaying captured image 
+import cv2
+import matplotlib.pyplot as plt
+def main():
+    cap = cv2.VideoCapture(0)
+
+    if cap.isOpened():
+        ret, frame = cap.read()
+        print(ret)                                  #when there are multipl web cam then use cap1, cap2 , cap1.relrase, cap2.release
+        print(frame)
+    else:
+        ret = False
+        
+    img1 = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+
+    plt.imshow(img1)
+    plt.title('color image RGB')
+    plt.xticks([])
+    plt.yticks([])
+    plt.show()
+
+    cap.release()
+
+  
+
+if __name__ =="__main__":
+    main()
+        
+    
+
+
+                    # to capture a video
+import cv2
+
+def main():
+    windowName = 'live video feed'
+    cv2.namedWindow(windowName)
+    cap = cv2.VideoCapture(0)
+
+    if cap.isOpened():
+        ret, frame = cap.read()
+        
+    else:
+        ret = False
+        
+    while   ret:  
+        ret , frame = cap.read()
+
+        cv2.imshow(windowName,frame)
+        if cv2.waitKey(1) == 27:
+            break
+
+    cv2.destroyWindow(windowName)
+
+    cap.release()
+
+  
+
+if __name__ =="__main__":
+    main()
+
+
+
+                             #TO SHOW VIDEO IN DIFFERENT COLOR
+import cv2
+
+def main():
+    windowName = 'live video feed'
+    cv2.namedWindow(windowName)
+    cap = cv2.VideoCapture(0)
+
+    if cap.isOpened():
+        ret, frame = cap.read()
+        
+    else:
+        ret = False
+        
+    while   ret:  
+        ret , frame = cap.read()
+        output = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        cv2.imshow('gray' , output)
+        cv2.imshow(windowName,frame)
+        if cv2.waitKey(1) == 27:
+            break
+
+    cv2.destroyWindow(windowName)
+
+    cap.release()
+
+  
+
+if __name__ =="__main__":
+    main()
+    
+
+                        #to display the resolution and set resolution     
+import cv2
+
+def main():
+    windowName = 'live video feed'
+    cv2.namedWindow(windowName)
+    cap = cv2.VideoCapture(0)
+
+    print('width' + str(cap.get(3)))                    #default resolution
+    print('height' + str(cap.get(4)))
+
+    cap.set(3,1520)                               #set the resolution
+    cap.set(4,1000)
+
+    print('width' + str(cap.get(3)))               #display the set resolution
+    print('height' + str(cap.get(4)))       
+    
+    if cap.isOpened():
+        ret, frame = cap.read()
+        
+    else:
+        ret = False
+        
+    while   ret:  
+        ret , frame = cap.read()
+        output = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        cv2.imshow('gray' , output)
+        cv2.imshow(windowName,frame)
+        if cv2.waitKey(1) == 27:
+            break
+
+    cv2.destroyWindow(windowName)
+
+    cap.release()
+
+  
+
+if __name__ =="__main__":
+    main()
+    
+
+
+                               #to save video
+import cv2
+
+def main():
+    windowName = 'live video feed'
+    cv2.namedWindow(windowName)
+    cap = cv2.VideoCapture(0)
+
+    filename = 'H:/ip3/anu.mp4'                    #we can give any name
+    codec = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
+    #codec - coding and decoding(encoding video)[XVID, H264, WMV2, WMV1, MJPG,DIVX - THESE ARE four character code used for this purpose 
+    framerate = 30    #no. of images  per second(for persistence of vision at least 25 is needed)
+    resolution = (640,480) 
+
+    VideoFileOutput = cv2.VideoWriter(filename, codec, framerate, resolution)
+    
+    if cap.isOpened():
+        ret, frame = cap.read()
+        
+    else:
+        ret = False
+        
+    while   ret:  
+        ret , frame = cap.read()
+
+        VideoFileOutput.write(frame)        #writing frame in output
+        
+        cv2.imshow(windowName,frame)
+        if cv2.waitKey(1) == 27:
+            break
+
+    cv2.destroyAllWindows()
+    VideoFileOutput.release()
+    cap.release()
+
+  
+
+if __name__ =="__main__":
+    main()
+    
+
+
+
+
