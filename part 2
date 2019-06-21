@@ -40,6 +40,256 @@ cv2.destroyAllWindows()
 
 
 
+
+                             #code to detect object using color
+import cv2
+import numpy as np
+
+def main():
+
+    
+    cap =  cv2.VideoCapture(0)
+
+    if cap.isOpened():
+        ret, frame = cap.read()
+    else:
+        ret= False
+
+    while ret:
+        ret, frame = cap.read()
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)         #hsv is more suitable for this purpose
+
+        #BLUE COLOR
+        low = np.array([100,50,50])
+        high = np.array([140,255,255])                 #higher and lower range of color
+
+        image_mask = cv2.inRange(hsv,low,high)         #*assigining low and high range of color*\
+
+        print(image_mask)                             #printing value of mask
+        cv2.imshow('image mask', image_mask)         
+        cv2.imshow('originial webcam feed', frame)
+        
+
+        if cv2.waitKey(1) ==27:
+         break
+    cv2.destroyAllWindows()
+    cap.release()
+
+if __name__ == '__main__':
+    main()
+
+       
+                        #[[codes for different color and color tracking as it is]]
+mport cv2
+import numpy as np
+
+def main():
+
+    
+    cap =  cv2.VideoCapture(0)
+
+    if cap.isOpened():
+        ret, frame = cap.read()
+    else:
+        ret= False
+
+    while ret:
+        ret, frame = cap.read()
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+        #BLUE COLOR
+  #      low = np.array([100,50,50])
+   #     high = np.array([140,255,255])
+
+        #green color                                                                  #choose any one of the color
+     #   low = np.array([40,50,50])
+    #    high = np.array([80,255,255])
+
+
+        #red color
+      #  low = np.array([140,150,0])
+       # high = np.array([180,255,255])
+
+        image_mask = cv2.inRange(hsv,low,high)                                   #trace and show the required color as white
+
+        output = cv2.bitwise_and(frame,frame, mask = image_mask)                #trace and show thw same color
+
+        cv2.imshow('image mask', image_mask)
+        cv2.imshow('originial webcam feed', frame)
+        cv2.imshow('color tracking', output)
+
+        if cv2.waitKey(1) ==27:
+         break
+    cv2.destroyAllWindows()
+    cap.release()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+                                      #to display multiple image in a single window
+import cv2
+import matplotlib.pyplot as plt
+
+def main():
+
+    path = "C:\\Users\\user\\Downloads\\"
+    imgpath1 = path + "bench-carved-stones-cemetery-257360.jpg"
+    imgpath2 = path +  "bloom-blooming-blossom-462118.jpg"
+
+    img1 =cv2.imread(imgpath1, 1)
+    img2 = cv2.imread(imgpath2,1)
+
+    img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
+    img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+
+
+    plt.subplot(1,2,1)
+    plt.imshow(img1)
+    plt.title('stone BLOOM')
+    plt.xticks([])
+    plt.yticks([])
+    
+
+    plt.subplot(1,2,2)
+    plt.imshow(img2)
+    plt.title('BLOOM BLOOM')
+    plt.xticks([])
+    plt.yticks([])
+    plt.show()
+
+    
+if __name__ =="__main__":
+    main()
+
+
+
+
+                               #to display multiple images using for loop
+import cv2
+import matplotlib.pyplot as plt
+
+def main():
+
+    path = "C:\\Users\\user\\Downloads\\"
+    imgpath1 = path + "bench-carved-stones-cemetery-257360.jpg"
+    imgpath2 = path +  "bloom-blooming-blossom-462118.jpg"
+
+    img1 =cv2.imread(imgpath1, 1)
+    img2 = cv2.imread(imgpath2,1)
+
+    img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
+    img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+
+    titles = ['stone bloom' , 'boom bloom']
+    images = [img1, img2]
+    
+
+    for i in range(2):
+        
+        plt.subplot(1,2,i+1)
+        plt.imshow(images[i])
+        plt.title(titles[i])
+        plt.xticks([])
+        plt.yticks([])
+    plt.show()
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+if __name__ =="__main__":
+    main()
+
+
+
+                                              #to apply geometry on images  
+import cv2
+import matplotlib.pyplot as plt
+
+def main():
+
+    path = "C:\\Users\\user\\Downloads\\"
+    imgpath1 = path + "bench-carved-stones-cemetery-257360.jpg"
+    imgpath2 = path +  "bloom-blooming-blossom-462118.jpg"
+
+    img1 =cv2.imread(imgpath1, 1)
+    img2 = cv2.imread(imgpath2,1)
+
+    
+    img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
+    img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+
+    add = img1 + 10                                       #due to high resolution img1 +\*\-\/ img2 not possible
+    sub = img2 - 90
+
+    titles = ['stone bloom' , 'boom bloom', 'subtraction', 'addition']
+    images = [img1, img2,  sub, add]
+    
+
+    for i in range(4):
+        
+        plt.subplot(2,2,i+1)
+        plt.imshow(images[i])
+        plt.title(titles[i])
+        plt.xticks([])
+        plt.yticks([])
+    plt.show()
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+if __name__ =="__main__":
+    main()
+
+
+
+                                      #add image
+import cv2
+import matplotlib.pyplot as plt
+
+def main():
+
+    path = "C:\\Users\\user\\Downloads\\"
+    imgpath1 = path + 'abc1.png'
+    imgpath2 = path +  'abc2.png'
+
+    img1 =cv2.imread(imgpath1, 1)
+    img2 = cv2.imread(imgpath2,1)
+
+    
+    img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
+    img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+
+    output = img1+ img2
+
+    titles = ['stone bloom' , 'boom bloom','blend']
+    images = [img1, img2, output]
+    
+
+    for i in range(3):
+        
+        plt.subplot(1,3,i+1)
+        plt.imshow(images[i])
+        plt.title(titles[i])
+        plt.xticks([])
+        plt.yticks([])
+    plt.show()
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+if __name__ =="__main__":
+    main()
+
+       
+
+
+
+
+
                                     #hera pheri with pixels
 import numpy as np
 import cv2
@@ -192,5 +442,56 @@ cv2.imshow('omg', omg_fg)
 cv2.imshow('dst',dst)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+
+
+
+
+                    #[[SAVING AND DISPLAYING MULTIPLE VIDEOS]]                                            
+import cv2
+
+def main():
+    windowName = 'live video feed'
+    cv2.namedWindow(windowName)
+    cap = cv2.VideoCapture(0)
+
+    filename1 = 'H:/ip3/anu.mp4'                    #we can give any name
+    filename2 = 'H:/ip3/anuS.mp4'  
+    codec = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
+    #codec - coding and decoding(encoding video)[XVID, H264, WMV2, WMV1, MJPG,DIVX - THESE ARE four character code used for this purpose 
+    framerate = 250   #no. of images  per second(for persistence of vision at least 25 is needed)
+    resolution = (640,480) 
+
+    VideoFileOutput = cv2.VideoWriter(filename1, codec, framerate, resolution)
+    VideoFileOutput2 = cv2.VideoWriter(filename2, codec, framerate, resolution)
+
+    
+    if cap.isOpened():
+        ret, frame = cap.read()
+        
+    else:
+        ret = False
+        
+    while   ret:  
+        ret , frame = cap.read()
+        fRAME2 = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        VideoFileOutput.write(frame)        #writing frame in output
+        VideoFileOutput2.write(fRAME2)
+        cv2.imshow(windowName,frame)                   #CHNGE THE WINDOW NAME FOR DIFFERENT VIDEOS OTHERWISE THEY WILL OPEN IN SAME ONE BY ONE
+        cv2.imshow('BGR',fRAME2)
+        if cv2.waitKey(1) == 27:
+            break
+
+    cv2.destroyAllWindows()
+    VideoFileOutput.release()
+    VideoFileOutput2.release()
+    cap.release()
+
+  
+
+if __name__ =="__main__":
+    main()
+    
+
 
 
