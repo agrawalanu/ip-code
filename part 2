@@ -1,0 +1,196 @@
+
+                               #trackbar
+import cv2
+import numpy as np
+
+def nothing(x):
+    pass
+
+img = np.zeros((300,512,3), np.uint8)
+cv2.namedWindow('image')
+
+cv2.createTrackbar('R' , 'image', 0, 255, nothing)
+cv2.createTrackbar('G', 'image', 0, 255, nothing)
+cv2.createTrackbar('B' , 'image', 0, 255, nothing)
+
+switch = '0 : OFF \n1 : ON'
+cv2.createTrackbar(switch, 'image' , 0, 1, nothing)
+
+while(1):
+    cv2.imshow('image', img)
+    k = cv2.waitKey(1)
+    if k == 27:
+        break
+
+    r = cv2.getTrackbarPos('R' , 'image')
+    g = cv2.getTrackbarPos('G' , 'image')
+    b = cv2.getTrackbarPos('B' , 'image')
+    s = cv2.getTrackbarPos(switch , 'image')
+
+
+    if s ==  0:
+        img[:] = 0
+    else:
+        img[:] = [b, g,r]
+
+cv2.destroyAllWindows()        
+
+
+
+
+
+
+                                    #hera pheri with pixels
+import numpy as np
+import cv2
+
+img = cv2.imread( "C:/Users/user/Downloads/cropped bench symmetry.jpg")
+px = img[55,55]                          #accessing color value of a particular pixel
+print(px)
+
+img[55, 55]= [255,255,255]                   #changing the color value of a pixel
+px = img[55, 55]                             #assinging that value to pixel    
+print(px)
+
+roi = img[100:105, 100:105]             #printin a region of space of image(row,column)
+print(roi)
+
+img[100:155, 100:155] = [255,255,255]           #changing the color vaue of a region
+
+stone = img[100:500, 600:800]
+img[0:400, 0:200] = stone              #copying pixels of stone to some other pixels
+
+cv2.imshow('anu', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+
+
+
+
+                                  #MAKING BORDER ON IMAGE
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+
+BLUE = [255,0,0]
+
+img1 = cv2.imread( "G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg")
+
+img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
+
+replicate = cv2.copyMakeBorder(img1, 30,30,30,30, cv2.BORDER_REPLICATE)
+#aaaaa/abcdefgh/gfedcba
+reflect= cv2.copyMakeBorder(img1,30,30,30,30, cv2.BORDER_REFLECT)
+#fedcba/abcdefgh/hgfedcb
+reflect101= cv2.copyMakeBorder(img1, 30,30,30,30, cv2.BORDER_REFLECT101)
+#gfedcb/abcdefgh/gfedcba
+wrap= cv2.copyMakeBorder(img1, 30,30,30,30, cv2.BORDER_WRAP)
+# cdefgh/abcdefgh/abcdefg
+constant = cv2.copyMakeBorder(img1, 10,10,10,10, cv2.BORDER_CONSTANT, value = BLUE)
+#addd constant colour border, value should be giben as next argument(will convert bgr2 rgb)
+TITLES =['ORIGINAL', 'REPLICATE',' REFLECT', 'REFLECT101', 'WRAP', 'CONSTANT']
+IMAGES = [img1, replicate, reflect, reflect101, wrap, constant]
+
+for i in range(6):
+    plt.subplot(2,3,i+1)
+    plt.title(TITLES[i])
+    plt.imshow(IMAGES[i])
+    plt.xticks([])
+    plt.yticks([])
+plt.show() 
+
+
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+
+
+
+
+
+
+                                                  #resize image
+import numpy as np
+import cv2
+
+
+
+img1 = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+img2 = cv2.imread("G:/New folder (3)/New folder/IMG-20180613-WA0024.jpg")
+resize = cv2.resize(img2, (480,481),interpolation = cv2.INTER_AREA)             #dim(480,481)-width,height,interpolation
+print(resize.shape)
+cv2.imshow('resixe', resize)
+
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+
+
+
+
+
+
+                            #to add images
+import numpy as np
+import cv2
+
+
+
+img1 = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+img2 = cv2.imread("G:/New folder (3)/New folder/IMG-20180613-WA0024.jpg")
+resize = cv2.resize(img2, (480,481),interpolation = cv2.INTER_AREA)
+
+add = img1+ resize
+cv2.imshow('add',add)       #numpy addition  i.e =250+10=260%256=4
+
+
+add2 = cv2.add(img1,resize)      #cv addition i.e 250+10= 260 = 255
+cv2.imshow('ffrevb', add2)         #cv addition wil give better result
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+
+
+
+                                    #bitwise operation
+import numpy as np
+import cv2
+
+
+
+img1 = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+img2 = cv2.imread("G:/New folder (3)/New folder/IMG-20180613-WA0024.jpg")
+omg = cv2.resize(img2, (480,481),interpolation = cv2.INTER_AREA)
+
+rows, cols, channels = omg.shape
+roi = img1[ 0:rows, 0:cols]
+
+omggray = cv2.cvtColor(omg, cv2.COLOR_BGR2GRAY)
+ret, mask = cv2.threshold(omggray, 220,255,cv2.THRESH_BINARY_INV)
+
+mask_inv = cv2.bitwise_not(mask)
+img1_bg = cv2.bitwise_and(roi, roi, mask = mask_inv)
+omg_fg = cv2.bitwise_and(omg,omg, mask = mask)
+
+dst = cv2.add(img1_bg, omg_fg)
+img1[0:rows, 0:cols] = dst
+cv2.imshow('res',img1)
+cv2.imshow('mask_inv', mask_inv)
+cv2.imshow('img1_bg', img1_bg)
+cv2.imshow('omg', omg_fg)
+cv2.imshow('dst',dst)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
