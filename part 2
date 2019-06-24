@@ -495,3 +495,877 @@ if __name__ =="__main__":
 
 
 
+
+
+
+                          #to get different colour flags
+import numpy as np
+import cv2
+
+
+
+flags = [i for i in dir(cv2) if i.startswith('COLOR_')]
+print(flags)
+
+
+
+
+
+
+
+                 #to get the hsv value for different color
+import cv2
+import numpy as np
+
+green = np.uint8([[[0,255,0]]])
+hsv_green = cv2.cvtColor(green, cv2.COLOR_BGR2HSV)
+print (hsv_green)
+
+
+
+
+
+                  #thresholding
+import cv2
+import numpy as np
+
+  
+
+img1 = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+retval, threshold = cv2.threshold(img1,150,255,cv2.THRESH_BINARY)
+
+grayscaled = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+retval, threshold2 = cv2.threshold(grayscaled,150,255,cv2.THRESH_BINARY)
+
+gaus = cv2.adaptiveThreshold(grayscaled, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 115, 1)
+retval,otsu = cv2.threshold(grayscaled,150,255,cv2.THRESH_BINARY+ cv2.THRESH_OTSU)
+
+
+
+cv2.imshow('original', img1)
+cv2.imshow('threshold2', threshold2)
+cv2.imshow('threshold', threshold)
+cv2.imshow('grayscaled', grayscaled)
+cv2.imshow('otsu', otsu)
+cv2.imshow('GAUS', gaus)
+cv2.waitKey(0)
+cv2.destroyAllWindows() 
+
+
+
+
+                       #TRANSITION OF IMAGES
+import cv2
+import numpy as np
+import time
+  
+
+img1 = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+img = cv2.imread("G:/New folder (3)/New folder/IMG-20180613-WA0024.jpg")  
+img2 = cv2.resize(img,(480,481),interpolation = cv2.INTER_AREA)
+alpha  = 0
+beta = 1
+gamma = 0
+
+for i in np.linspace(0,1,100):                #(ALPHA,BETA,NO.OF PARTS IMAGE WILL BE DIVIDED
+ 
+    alpha = i
+    beta = 1-alpha
+    output = cv2.addWeighted(img1,alpha,img2,beta,0)       
+    cv2.imshow('transition',output)
+    time.sleep(0.03)                                 #TIME DELAY BETWEEN TWO IMAGE
+
+    if cv2.waitKey(1) == 27:
+        break
+
+cv2.destroyAllWindows()
+
+
+
+
+
+
+                                 #trackbar for transition
+import cv2
+import numpy as np
+
+def emptyFunction():
+    pass
+
+def main():
+    img1 = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+    img = cv2.imread("G:/New folder (3)/New folder/IMG-20180613-WA0024.jpg")  
+    img2 = cv2.resize(img,(480,481),interpolation = cv2.INTER_AREA)
+
+    output = cv2.addWeighted(img1,0.5,img2,0.5,0)
+
+    windowName = 'Transition Demo'
+    cv2.namedWindow(windowName)
+
+    cv2.createTrackbar('alpha', windowName,0,10,emptyFunction)   #(trackbar name, window name, initial value,no. of division,task to perforem
+    
+    while(True):
+        cv2.imshow(windowName, output)
+    
+        if cv2.waitKey(1) == 27:
+            break
+        alpha = cv2.getTrackbarPos('alpha', windowName)/10
+        beta = 1-alpha
+
+        output = cv2.addWeighted(img1,alpha,img2,beta,0)
+
+        print(alpha,beta)
+       
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+                                                #split and merge
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def main():
+    img1 = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+    img = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
+    r, g,b = cv2.split(img)                                       #divide function into different channels
+
+    titles = ['original', 'red', 'green', 'blue']        
+    images = [cv2.merge((r,g,b)), r,g,b]               #merge again combine the three channels
+
+    plt.subplot(2,2,1)
+    plt.imshow(images[0])
+    plt.title(titles[0])
+    plt.xticks([])
+    plt.yticks([])
+    
+    plt.subplot(2,2,2)
+    plt.imshow(images[1], cmap= 'Reds')
+    plt.title(titles[1])
+    plt.xticks([])                                              #according to the intensity of color, in that image, its intensity in gray scale is consideres
+    plt.yticks([])
+    
+    plt.subplot(2,2,3)
+    plt.imshow(images[2], cmap= 'Greens')
+    plt.title(titles[2])
+    plt.xticks([])
+    plt.yticks([])
+    
+
+    plt.subplot(2,2,4)
+    plt.imshow(images[3], cmap= 'Blues')
+    plt.title(titles[3])
+    plt.xticks([])
+    plt.yticks([])
+
+    plt.show()
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+ 
+                            #split and merge and show in gray
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def main():
+    img1 = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+    img = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
+    r, g,b = cv2.split(img)
+
+    titles = ['original', 'red', 'green', 'blue']
+    images = [cv2.merge((r,g,b)), r,g,b]
+
+    plt.subplot(2,2,1)
+    plt.imshow(images[0])
+    plt.title(titles[0])
+    plt.xticks([])
+    plt.yticks([])
+    
+    plt.subplot(2,2,2)
+    plt.imshow(images[1], cmap= 'gray')
+    plt.title(titles[1])
+    plt.xticks([])
+    plt.yticks([])
+    
+    plt.subplot(2,2,3)
+    plt.imshow(images[2], cmap= 'gray')
+    plt.title(titles[2])
+    plt.xticks([])
+    plt.yticks([])
+    
+
+    plt.subplot(2,2,4)
+    plt.imshow(images[3], cmap= 'gray')
+    plt.title(titles[3])
+    plt.xticks([])
+    plt.yticks([])
+
+    plt.show()
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+                                          #showin negative of a image
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def main():
+    img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0024.jpg')
+    img1 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img2 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+
+    img3 = abs(255-img1)
+    img4 = abs(255-img2)
+    
+    titles = ['color image', 'grayscale', 'color_negative', 'grayscale-negative']        
+    images = [img1,img2, img3, img4]               
+
+    plt.subplot(2,2,1)
+    plt.imshow(images[0])
+    plt.title(titles[0])
+    plt.xticks([])
+    plt.yticks([])
+    
+    plt.subplot(2,2,2)
+    plt.imshow(images[1], cmap= 'gray')
+    plt.title(titles[1])
+    plt.xticks([])                                             
+    plt.yticks([])
+    
+    plt.subplot(2,2,3)
+    plt.imshow(images[2], )
+    plt.title(titles[2])
+    plt.xticks([])
+    plt.yticks([])
+    
+
+    plt.subplot(2,2,4)
+    plt.imshow(images[3], cmap= 'gray')
+    plt.title(titles[3])
+    plt.xticks([])
+    plt.yticks([])
+
+    plt.show()
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+                          #resize
+import cv2
+import numpy as np
+
+
+def main():
+    img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0024.jpg')
+    output = cv2.resize(img,None, fx = 2, fy=2, interpolation = cv2.INTER_NEAREST)
+
+
+    cv2.imshow('yup', output)         #INTER_NEAREST,INTER_LINEAR,INTER_CUBIC(ZOOMING),INTER_AREA(SHRINKING),INTER_LANCZ0S4
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+                              #translation of image
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+def main():
+    img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0024.jpg')
+    img1 = cv2.resize(img,(480,480), interpolation = cv2.INTER_AREA)
+    
+
+    rows, columns, channels =  img.shape
+
+    T = np.float32([[1,0,300],[0,1,200]])
+    print(T)
+    
+    yup = cv2.warpAffine(img1, T, (columns, rows))
+
+    cv2.imshow('yup', yup)          
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+                  #rotate an image
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+def main():
+    img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0024.jpg')
+    img1 = cv2.resize(img,(480,480), interpolation = cv2.INTER_AREA)
+    
+
+    rows, columns, channels =  img.shape
+
+    R = cv2.getRotationMatrix2D((columns/2, rows/2), 45,0.5)  #((),angle, scaling)
+    print(R)
+    
+    yup = cv2.warpAffine(img1, R, (columns, rows))
+
+    cv2.imshow('yup', yup)          
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+                        #complete rotation of image
+import cv2
+import numpy as np
+import time
+
+def main():
+    img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+    
+    
+
+    rows, columns, channels =  img.shape
+
+    angle = 0
+
+    while True:
+        if angle == 360:
+            angle = 0
+            
+        R = cv2.getRotationMatrix2D((columns/2, rows/2), angle,0.5)  #((),angle, scaling)
+        print(R)
+    
+        yup = cv2.warpAffine(img, R, (columns, rows))
+
+        cv2.imshow('yup', yup)
+        angle = angle+1
+        time.sleep(0.01)
+        
+        if cv2.waitKey(1) == 27:
+            break
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+
+
+                           #rotating within a range
+import cv2
+import numpy as np
+import time
+
+def main():
+    img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+    
+    
+
+    rows, columns, channels =  img.shape
+
+    angle = 90
+
+    while True:
+        if angle == 180:
+            angle = 90
+            
+        R = cv2.getRotationMatrix2D((columns/2, rows/2), angle,0.5)  #((),angle, scaling)
+        print(R)
+    
+        yup = cv2.warpAffine(img, R, (columns, rows))
+
+        cv2.imshow('yup', yup)
+        angle = angle+1
+        time.sleep(0.01)                            #for clockwise rotation start from 360 degrees and uss angle = angle - 1
+        
+        if cv2.waitKey(1) == 27:
+            break
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+
+ 
+                                               #to rotate live video
+import cv2
+import numpy as np
+import time
+
+def main():
+   
+    cap = cv2.VideoCapture(0)
+
+    if cap.isOpened():
+        ret, frame = cap.read()
+
+    else:
+        ret = False
+        
+    rows, columns, channels =  frame.shape
+
+    angle = 0
+    scale = 1
+    
+    while True:
+        ret, frame = cap.read()
+        if angle == 360:
+            angle = 0
+            
+        R = cv2.getRotationMatrix2D((columns/2, rows/2), angle,scale)  #((),angle, scaling)
+        print(R)
+    
+        yup = cv2.warpAffine(frame, R, (columns, rows))
+
+        cv2.imshow('yup', yup)
+        angle = angle+1
+        time.sleep(0.01)
+        
+        if cv2.waitKey(1) == 27:
+            break
+    cv2.destroyAllWindows()
+    cap.release()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+
+
+
+                                 #rotate and zoom live video
+import cv2
+import numpy as np
+import time
+
+def main():
+   
+    cap = cv2.VideoCapture(0)
+
+    if cap.isOpened():
+        ret, frame = cap.read()
+
+    else:
+        ret = False
+        
+    rows, columns, channels =  frame.shape
+
+    angle = 0
+    scale = 0.1
+    
+    while True:
+        ret, frame = cap.read()
+        if angle == 360:
+            angle = 0
+        if scale<2:
+            scale = scale +0.1
+
+        if scale >=2:
+            scale = 0.1
+
+            
+        R = cv2.getRotationMatrix2D((columns/2, rows/2), angle,scale)  #((),angle, scaling)
+        print(R)
+    
+        yup = cv2.warpAffine(frame, R, (columns, rows))
+
+        cv2.imshow('yup', yup)
+        angle = angle+1
+        time.sleep(0.01)
+        
+        if cv2.waitKey(1) == 27:
+            break
+    cv2.destroyAllWindows()
+    cap.release()
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+                                 #affine transform
+import cv2
+import numpy as np
+import time
+
+def main():
+   
+    img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+    rows, columns, channels = img.shape
+    point1 = np.float32([[100,100], [300,100], [100, 300]])
+    point2 = np.float32([[200,150], [400,150],[200,600]])
+
+    A = cv2.getAffineTransform(point1, point2)
+    print(A)
+    
+    output = cv2.warpAffine(img, A, (columns, rows))
+
+    cv2.imshow('yup', output)
+       
+        
+        
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+                                  #thresholding on gray scale
+import cv2
+import numpy as np
+
+
+def main():
+   
+    img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+    img2 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    th =125
+    max_val = 255
+
+    ret,o1 = cv2.threshold(img2, th, max_val, cv2.THRESH_BINARY)          #px<th = 0, px>th = 255
+    ret,o2 = cv2.threshold(img2, th, max_val, cv2.THRESH_BINARY_INV)      #px<th = 255, px>th= 0  
+    ret,o3 = cv2.threshold(img2, th, max_val, cv2.THRESH_TOZERO)           #px<th = 0, px>th = px
+    ret,o4 = cv2.threshold(img2, th, max_val, cv2.THRESH_TOZERO_INV)           #inv of to zero
+    ret,o5 = cv2.threshold(img2, th, max_val, cv2.THRESH_TRUNC)              #px<th = px, px>th = th
+    
+    cv2.imshow('real', img2)
+    cv2.imshow('01', o1)
+    cv2.imshow('02', o2)
+    cv2.imshow('03', o3)
+    cv2.imshow('04', o4)
+    cv2.imshow('05',o5)
+        
+        
+        
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+                             #thresholdinf of color image
+import cv2
+import numpy as np
+
+
+def main():
+   
+    img2 = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+    
+
+    th =125
+    max_val = 255
+
+    ret,o1 = cv2.threshold(img2, th, max_val, cv2.THRESH_BINARY)          #px<th = 0, px>th = 255
+    ret,o2 = cv2.threshold(img2, th, max_val, cv2.THRESH_BINARY_INV)      #px<th = 255, px>th= 0  
+    ret,o3 = cv2.threshold(img2, th, max_val, cv2.THRESH_TOZERO)           #px<th = 0, px>th = px
+    ret,o4 = cv2.threshold(img2, th, max_val, cv2.THRESH_TOZERO_INV)           #inv of to zero
+    ret,o5 = cv2.threshold(img2, th, max_val, cv2.THRESH_TRUNC)              #px<th = px, px>th = th
+    
+    cv2.imshow('real', img2)
+    cv2.imshow('01', o1)
+    cv2.imshow('02', o2)
+    cv2.imshow('03', o3)
+    cv2.imshow('04', o4)
+    cv2.imshow('05',o5)
+        
+        
+        
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+                                      #thresholding of videos
+import cv2
+import numpy as np
+
+
+def main():
+
+    cap = cv2.VideoCapture(0)
+
+    if cap.isOpened():
+        ret, frame = cap.read()
+    else:
+        ret = False
+    while ret:
+        ret, frame = cap.read()
+
+        th = 27
+        max_value = 255
+
+
+
+        ret, o1 = cv2.threshold(frame,th,max_value, cv2.THRESH_BINARY)
+        ret, o2 = cv2.threshold(frame,th,max_value, cv2.THRESH_BINARY_INV)
+        ret, o3 = cv2.threshold(frame,th,max_value, cv2.THRESH_TOZERO)
+        ret, o4 = cv2.threshold(frame,th,max_value, cv2.THRESH_TOZERO_INV)
+        ret, o5 = cv2.threshold(frame,th,max_value, cv2.THRESH_TRUNC)
+   
+        cv2.imshow('01', o1)
+        cv2.imshow('02', o2)
+        cv2.imshow('03', o3)
+        cv2.imshow('04', o4)
+        cv2.imshow('05', o5)
+        cv2.imshow('frames', frame)
+
+        if cv2.waitKey(5) == 27:
+            break
+        
+        
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+
+
+
+                      #adding noise to image
+import cv2
+import numpy as np
+import random
+
+img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+ 
+
+rows, columns, channels = img.shape
+
+p = 0.05
+output = np.zeros(img.shape, np.uint8)
+for i in range(rows):
+    for j in range (columns):
+        r = random.random()
+        if r<p/2:
+            output [i][j] = [0,0,0]           #pepper
+
+        elif r<p:
+            output[i][j] = [255,255,255]       #salt
+
+        else:
+            output[i][j] = img[i][j]
+        
+
+cv2.imshow('frames', output)
+
+     
+        
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+
+
+                       #to display image using kernel matxix(here identity matrix)
+import cv2
+import numpy as np
+import random
+
+img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+ 
+
+k = np.array(([0,0,0], [0,1,0],[0,0,0]) , np.float32)           #this is equivalent to identity matrix in kernel form
+#k = np.array (np.ones((3,3), np.float32))   #will create a 3 order identitiy matrix 
+#k = np.array (np.zeros((3,3), np.float32))      #will create a 3 order null matrix
+output = cv2.filter2D(img, -1, k)                #-1 keeps the depth of input and out image same  , here same image will be displayed since multipied with identity matrix    
+cv2.imshow('identity matrix', output)
+print(k)
+print(type(k))
+
+     
+        
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+
+
+
+                #edge detection 1 using kernel form
+import cv2
+import numpy as np
+import random
+
+img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+ 
+
+k = np.array(([0,1,0], [1,-4,1],[0,1,0]) , np.float32)          
+v = np.array(([-1,-1,-1], [-1,8,-1],[-1,-1,-1]) , np.float32)           #this is used for edge detection in kernel form
+m = np.array(([1,0,-1], [0,0,0],[-1,0,1]) , np.float32)   
+output_2 = cv2.filter2D(img, -1, v)                #-1 keeps the depth of input and out image same  , here edges of image will be detected
+cv2.imshow('most sharp edge detect', output_2)
+output = cv2.filter2D(img, -1, k)                
+cv2.imshow(' sharp detect', output)
+output_1 = cv2.filter2D(img, -1, m)                #-1 keeps the depth of input and out image same  , here edges of image will be detected
+cv2.imshow('less sharp edge detect ', output_1)
+cv2.imshow('original', img)
+print(k)
+print(type(k))
+
+     
+        
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+    
+    
+
+
+
+
+
+
+                  #to create sharp image
+import cv2
+import numpy as np
+import random
+
+img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+ 
+
+k = np.array(([0,-1,0], [-1,-4,-1],[0,-1,0]) , np.float32)          
+output = cv2.filter2D(img, -1,k)
+cv2.imshow('sharp image ', output)
+cv2.imshow('original', img)
+print(k)
+print(type(k))
+
+     
+        
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+    
+    
+
+
+
+
+
+                     # to blur the image
+import cv2
+import numpy as np
+import random
+
+img = cv2.imread('G:/New folder (3)/New folder/IMG-20180613-WA0023.jpg')
+ 
+
+k = np.array(np.ones((8,8), np.float32))/64    #the more we will give value to matrix, the more blurred image will be     
+#k = np.array(np.ones((8,8), np.float32))/64 > k = np.array(np.ones((6,6), np.float32))/36    blur
+
+output = cv2.filter2D(img, -1,k)
+cv2.imshow('sharp image ', output)
+cv2.imshow('original', img)
+print(k)
+print(type(k))
+
+     
+                                                               #for more blurring operations check kernel matrix in google        
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+    
+    
+
+    
+
+
+
+    
+
+
